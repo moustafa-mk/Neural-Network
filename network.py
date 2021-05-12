@@ -18,7 +18,7 @@ def mse(target, output):
     :param output: actual output
     :return: mean squared error between target and output
     """
-    se = np.subtract(target, output)**2
+    se = np.subtract(target, output) ** 2
     return se.mean()
 
 
@@ -26,6 +26,7 @@ class NN:
     """
     Class for Neural Network
     """
+
     def __init__(self):
         self.layers = []
         self.round = np.vectorize(round)
@@ -37,7 +38,7 @@ class NN:
         :return:
         """
         self.layers.append(layer)
-    
+
     def compile(self, input_size):
         """
         called when fit is first called.
@@ -48,7 +49,7 @@ class NN:
         self.layers[0].connect(input_size)
         self.layers[0].compile()
         for i in range(1, len(self.layers)):
-            prev_output_size = self.layers[i-1].get_output_size()
+            prev_output_size = self.layers[i - 1].get_output_size()
             self.layers[i].connect(prev_output_size)
             self.layers[i].compile()
 
@@ -62,7 +63,7 @@ class NN:
         for i in range(1, len(self.layers)):
             output = self.layers[i].feed_forward(output)
         return output
-    
+
     def back_propagate(self, input, output_error, lr):
         """
         apply backward propagation for learning weights
@@ -73,16 +74,16 @@ class NN:
         """
         self.layers[-1].calc_error(output_error)
         output_error = self.layers[-1].calc_prev_output_error()
-        
+
         for i in range(len(self.layers) - 2, -1, -1):
             self.layers[i].calc_error(output_error)
             output_error = self.layers[i].calc_prev_output_error()
-        
+
         prev_output = input
         for i in range(0, len(self.layers)):
             self.layers[i].update_weights(prev_output, lr)
             prev_output = self.layers[i].get_output()
-    
+
     def fit(self, X_train, y_train, epochs=1000, lr=0.1):
         """
         apply feedforward and backpropagation for each epoch
@@ -98,14 +99,14 @@ class NN:
             for j in range(samples):
                 sample = X_train[j]
                 output = self.feed_forward(sample)
-                
+
                 error = mse(y_train[j], output)
-                
+
                 output_error = np.subtract(y_train[j], output)
                 self.back_propagate(sample, output_error, lr)
-                
-                print('epoch %d/%d   error=%f' % (epoch+1, epochs, error/samples))
-                
+
+                print('epoch %d/%d   error=%f' % (epoch + 1, epochs, error / samples))
+
     def predict_list(self, X):
         """
         predicts output for a list of inputs
