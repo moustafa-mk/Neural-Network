@@ -1,2 +1,2 @@
 # Neural-Network
-Python Implementation for a neural network from scratch.
+Vectorized Python Implementation for an Artificial Neural Network from scratch using NumPy.
